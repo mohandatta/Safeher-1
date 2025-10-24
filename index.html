@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafeHer Web - Women's Safety Alert System</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="https://raw.githubusercontent.com/google/material-design-icons/master/png/social/notifications/2x_web/ic_notifications_black_48dp.png" type="image/png">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <img src="https://image.pngkit.com/png/full/229-2290947_sos-icon-png-sos-icon.png" alt="SOS Icon" class="header-icon">
+            <h1>SafeHer Web</h1>
+            <button id="settingsBtn" class="icon-button"><i class="fas fa-cog"></i></button>
+        </header>
+
+        <main>
+            <div id="statusDisplay" class="status-message">
+                <i class="fas fa-circle-info"></i> Ready. Add contacts and enable features.
+            </div>
+
+            <button id="sosButton" class="main-button pulse">
+                <i class="fas fa-triangle-exclamation"></i>
+                <span>SOS</span>
+                <span class="countdown-timer" style="display: none;">5</span>
+            </button>
+
+            <div class="contact-section">
+                <h2>Emergency Contacts</h2>
+                <div id="contactList" class="contact-list">
+                    <!-- Contacts will be loaded here by JS -->
+                </div>
+                <button id="addContactBtn" class="secondary-button"><i class="fas fa-user-plus"></i> Add New Contact</button>
+            </div>
+        </main>
+
+        <footer>
+            <p>&copy; 2023 SafeHer Web. Empowering women with technology for a safer tomorrow.</p>
+        </footer>
+    </div>
+
+    <!-- Modals -->
+
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Settings</h2>
+            <div class="setting-item">
+                <label for="voiceActivationToggle">Voice Activation ("Help Me")</label>
+                <label class="switch">
+                    <input type="checkbox" id="voiceActivationToggle">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+            <div class="setting-item">
+                <label for="fakeCallToggle">Fake Call Feature</label>
+                <label class="switch">
+                    <input type="checkbox" id="fakeCallToggle">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+            <div class="setting-item">
+                <button id="triggerFakeCallBtn" class="secondary-button" style="display: none;">Trigger Fake Call Now</button>
+            </div>
+            <div class="setting-item">
+                <label for="testModeToggle">Test Mode</label>
+                <label class="switch">
+                    <input type="checkbox" id="testModeToggle">
+                    <span class="slider round"></span>
+                </label>
+                <p class="note">When enabled, alerts will simulate sending without notifying real contacts.</p>
+            </div>
+            <button id="saveSettingsBtn" class="primary-button">Save Settings</button>
+        </div>
+    </div>
+
+    <!-- Add/Edit Contact Modal -->
+    <div id="contactModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2 id="contactModalTitle">Add New Contact</h2>
+            <form id="contactForm">
+                <div class="form-group">
+                    <label for="contactName">Name:</label>
+                    <input type="text" id="contactName" required>
+                </div>
+                <div class="form-group">
+                    <label for="contactMethod">Method:</label>
+                    <select id="contactMethod" required>
+                        <option value="whatsapp">WhatsApp</option>
+                        <option value="email">Email</option>
+                        <!-- SMS requires backend, so we'll simulate for now -->
+                        <option value="sms">SMS (Simulated)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="contactValue" id="contactValueLabel">WhatsApp Number:</label>
+                    <input type="text" id="contactValue" required placeholder="e.g., +1234567890 (WhatsApp), example@email.com (Email)">
+                </div>
+                <button type="submit" class="primary-button">Save Contact</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Alert Confirmation Modal -->
+    <div id="alertConfirmationModal" class="modal">
+        <div class="modal-content">
+            <h2 id="alertConfirmationTitle">Sending SOS Alert!</h2>
+            <p>Your location and alert message are being sent to your emergency contacts.</p>
+            <p>You can cancel in <span id="alertCountdown">5</span> seconds.</p>
+            <button id="cancelAlertBtn" class="secondary-button">Cancel Alert</button>
+        </div>
+    </div>
+
+    <!-- Fake Call Modal -->
+    <div id="fakeCallModal" class="modal fake-call-modal">
+        <div class="modal-content">
+            <div class="incoming-call-header">
+                <i class="fas fa-phone-volume"></i>
+                <span>Incoming Call</span>
+            </div>
+            <div class="caller-info">
+                <img src="https://via.placeholder.com/100" alt="Caller Image" class="caller-image">
+                <h3 id="fakeCallerName">Emergency Contact</h3>
+                <p id="fakeCallerNumber">Unknown Number</p>
+            </div>
+            <div class="call-actions">
+                <button id="declineCallBtn" class="call-button decline"><i class="fas fa-phone-slash"></i> Decline</button>
+                <button id="acceptCallBtn" class="call-button accept"><i class="fas fa-phone"></i> Accept</button>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="script.js"></script>
+</body>
+</html>
