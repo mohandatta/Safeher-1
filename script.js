@@ -90,10 +90,13 @@ function updateStatus(message, type = 'info') {
 // ==============================
 // Geolocation
 // ==============================
+// ==============================
+// Geolocation (Improved with fallback)
+// ==============================
 function getGeolocation() {
     if (!navigator.geolocation) {
         updateStatus("Geolocation not supported by your browser.", 'error');
-        currentGeolocation = null;
+        currentGeolocation = { latitude: 28.6139, longitude: 77.2090 }; // New Delhi fallback
         return;
     }
 
@@ -112,23 +115,25 @@ function getGeolocation() {
             let reason = "";
             switch (error.code) {
                 case error.PERMISSION_DENIED:
-                    reason = "Permission denied. Please allow location access.";
+                    reason = "Permission denied. Using fallback location (New Delhi).";
                     break;
                 case error.POSITION_UNAVAILABLE:
-                    reason = "Location unavailable. Try again later.";
+                    reason = "Position unavailable. Using fallback location (New Delhi).";
                     break;
                 case error.TIMEOUT:
-                    reason = "Request timed out. Try again.";
+                    reason = "Location request timed out. Using fallback location (New Delhi).";
                     break;
                 default:
-                    reason = error.message || "Unknown error.";
+                    reason = error.message || "Unknown error. Using fallback location (New Delhi).";
             }
-            updateStatus(`Location error: ${reason}`, 'error');
-            currentGeolocation = null;
+
+            currentGeolocation = { latitude: 28.6139, longitude: 77.2090 };
+            updateStatus(reason, 'warning');
         },
-        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+        { enableHighAccuracy: true, timeout: 7000, maximumAge: 0 }
     );
 }
+
 
 function generateGoogleMapsLink(latitude, longitude) {
     return latitude && longitude
@@ -479,3 +484,4 @@ document.addEventListener('DOMContentLoaded', () => {
     loadSettings();
     renderContacts();
 });
+
